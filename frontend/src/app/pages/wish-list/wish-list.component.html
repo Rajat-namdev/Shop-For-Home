@@ -1,0 +1,40 @@
+<mat-card style="border: 25px solid burlywood; background-color: aqua;">
+<h1 class="display-4 text-center bg-light mb-5 font-weight-bold">My WishList</h1>
+
+<div *ngIf="page?.content.length>0; else empty">
+  <table class="table table-striped text-center h4">
+    <thead style="border: 2px solid black;">
+      <tr>
+        <th scope="col">Photo</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let productInOrder of page?.content">
+        <th class="align-middle" scope="row">
+          <a routerLink="/product/{{productInOrder.product.productId}}"><img height="100px"
+              src="{{productInOrder.product.productIcon}}" alt="{{productInOrder.product.productName}}"></a>
+        </th>
+        <td class="align-middle"><a
+            routerLink="/product/{{productInOrder.product.productId}}">{{productInOrder.product.productName}}</a></td>
+        <td class="align-middle">{{productInOrder.product.productPrice | currency : '&#8377;'}}</td>
+        <td class="align-middle">
+          {{productInOrder.product.productStock}}
+        </td>
+        <td class="align-middle">
+          <a (click)="handleRemoveFromWishList(productInOrder.product.productId)" routerLink="/wishlist"
+            class="btn btn-outline-danger btn-lg font-weight-bold">Remove <i class="fa fa-trash" aria-hidden="true"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #empty>
+  <h2 class="text-secondary text-center font-weight-bold bg-light">Wishlist is empty.</h2>
+</ng-template>
+</mat-card>

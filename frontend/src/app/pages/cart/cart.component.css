@@ -1,0 +1,13 @@
+table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+
+}
+
+.table tr td {
+    padding: 20px 20px;
+    border: 1px solid black;
+    
+   
+}

@@ -1,0 +1,99 @@
+
+<div class="text-center">
+  <mat-card style="border: 45px solid burlywood;">
+<div class="row justify-content-center text-center" style="background-color: aqua;">
+  <div class="col-md-12 text-center offset-md-6">
+    <div class="wrapper">
+      <div class="row no-gutters">
+        <div class="col-lg-6">
+          <div class="contact-wrap w-100 p-md-5 p-4">
+            <mat-card style="border: 2px solid black;">
+            <h2 class="font-weight-bold">Contact us</h2>
+            <h5 class="mb-4 font-weight-bold">We're open for any suggestion or just to have a chat</h5>
+
+            <div class="row mb-4">
+              <div class="col-md-auto">
+                <div class="text">
+                  <p><span class="h4">Address : </span><span class="text-justify h5">Shop For Home</span></p>
+                </div>
+              </div>
+
+              <div class="col-md-auto">
+                <div class="text font-weight-bold">
+                  <p><span class="h4">Email : </span> <a href="mailto:shopForHome@gmail.com"
+                      class="text-primary h5">shopForHome@gmail.com</a></p>
+                </div>
+              </div>
+
+              <div class="col-md-auto">
+                <div class="text font-weight-bold">
+                  <p><span class="h4">Phone : </span><span class="text-primary h5">+ 1235 2355 98</span></p>
+                </div>
+              </div>
+
+            </div>
+
+            <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <input type="text" class="form-control form-control-lg font-weight-bold" name="name" id="name"
+                      placeholder="Name">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <input [(ngModel)]="dataset.recipient" type="email"
+                      class="form-control form-control-lg font-weight-bold" name="email" id="email" placeholder="Email">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <input [(ngModel)]="dataset.subject" type="text"
+                      class="form-control form-control-lg font-weight-bold" name="subject" id="subject"
+                      placeholder="Subject">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <textarea [(ngModel)]="dataset.msgBody" name="message"
+                      class="form-control form-control-lg font-weight-bold" id="message" cols="30" rows="3"
+                      placeholder="Create a message here"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <button type="submit" (click)="onSubmit()" value="Send Message"
+                      class="btn btn-primary btn-lg font-weight-bold">Send Message <i class="fa fa-envelope"
+                        aria-hidden="true"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            </mat-card>
+
+            <div class="font-weight-bold mt-4">
+              <h2>Follow us here</h2>
+              <p>
+                <a href="#" class="mr-2">Facebook</a>
+                <a href="#" class="mr-2">Twitter</a>
+                <a href="#" class="mr-2">Instagram</a>
+                <a href="#">Linkedin</a>
+              </p>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-lg-6 d-flex align-items-stretch">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</mat-card>
+</div>
+

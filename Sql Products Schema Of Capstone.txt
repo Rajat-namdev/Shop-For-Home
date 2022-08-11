@@ -1,0 +1,298 @@
+-- -----------------------------------------------------
+-- Schema shop_for_home
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `ShopForHome`;
+
+CREATE SCHEMA `ShopForHome`;
+USE `ShopForHome` ;
+
+
+-- -----------------------------------------------------------------------------------------------------------------------------
+-- NOTE -: Do not need to create tables because we have set in backend ddl-auto=update so that it automatecally generate tables.
+-- -----------------------------------------------------------------------------------------------------------------------------
+
+-- -----------------------------------------------------
+-- Table  `ShopForHome`.`cart`
+-- -----------------------------------------------------
+-- DROP TABLE IF EXISTS `ShopForHome`.cart;
+
+ create table hibernate_sequence(next_val BIGINT NOT NULL);
+ INSERT INTO hibernate_sequence (next_val) VALUES (4);
+
+CREATE TABLE IF NOT EXISTS `ShopForHome`.`cart`
+(
+    `user_id` BIGINT(20) NOT NULL,
+    CONSTRAINT `cart_pkey1` PRIMARY KEY (`user_id`)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT = 1;
+	
+
+-- -----------------------------------------------------
+-- Table: `ShopForHome`.`discount`
+-- -----------------------------------------------------
+-- DROP TABLE IF EXISTS `ShopForHome`.`discount`;
+
+CREATE TABLE IF NOT EXISTS `ShopForHome`.`discount`
+(
+    `id` VARCHAR(255) NOT NULL,
+    `status` BIGINT(20),
+    CONSTRAINT `discount_pkey` PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT = 1;
+
+
+-- -----------------------------------------------------
+-- Table: `ShopForHome`.`order_main`
+-- -----------------------------------------------------
+-- DROP TABLE IF EXISTS `ShopForHome`.order_main;
+
+CREATE TABLE IF NOT EXISTS `ShopForHome`.`order_main`
+(
+    `order_id` BIGINT(20) NOT NULL,
+    `buyer_address` VARCHAR(255) ,
+    `buyer_email` VARCHAR(255) ,
+    `buyer_name` VARCHAR(255) ,
+    `buyer_phone` VARCHAR(255) ,
+    `create_time` DATETIME(6),
+    `order_amount` DECIMAL(19,2) NOT NULL,
+    `order_status` INT(11) NOT NULL DEFAULT 0,
+    `update_time` DATETIME(6),
+    CONSTRAINT `order_main_pkey` PRIMARY KEY (`order_id`)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT = 1;
+
+
+-- -----------------------------------------------------
+-- Table: `ShopForHome`.`product_category`
+-- -----------------------------------------------------
+
+-- DROP TABLE IF EXISTS `ShopForHome`.`product_category`;
+
+CREATE TABLE IF NOT EXISTS `ShopForHome`.`product_category`
+(
+    `category_id` INT(11) NOT NULL,
+    `category_name` VARCHAR(255) ,
+    `category_type` INT(11),
+    `create_time` DATETIME(6),
+    `update_time` DATETIME(6),
+    CONSTRAINT `product_category_pkey` PRIMARY KEY (`category_id`),
+    CONSTRAINT `uk_6kq6iveuim6wd90cxo5bksumw` UNIQUE (`category_type`)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT = 1;
+
+
+-- -----------------------------------------------------	
+-- Table: `ShopForHome`.`product_in_order`
+-- -----------------------------------------------------
+-- DROP TABLE IF EXISTS `ShopForHome`.`product_in_order`;
+
+CREATE TABLE IF NOT EXISTS `ShopForHome`.`product_in_order`
+(
+    `id` BIGINT(20) NOT NULL,
+    `category_type` INT(11) NOT NULL,
+    `count` INT(11),
+    `product_description` VARCHAR(255)  NOT NULL,
+    `product_icon` VARCHAR(255) ,
+    `product_id` VARCHAR(255) ,
+    `product_name` VARCHAR(255) ,
+    `product_price` DECIMAL(19,2) NOT NULL,
+    `product_stock` INT(11),
+    `cart_user_id` BIGINT(20),
+    `order_id` BIGINT(20),
+    CONSTRAINT `product_in_order_pkey` PRIMARY KEY (`id`),
+    CONSTRAINT `fkt0sfj3ffasrift1c4lv3ra85e` FOREIGN KEY (`order_id`)
+        REFERENCES `ShopForHome`.`order_main` (`order_id`) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT `product_cart_fkey` FOREIGN KEY (`cart_user_id`)
+        REFERENCES `ShopForHome`.`cart` (`user_id`) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+       -- NOT VALID,
+    CONSTRAINT `product_in_order_count_check` CHECK (count >= 1),
+    CONSTRAINT `product_in_order_product_stock_check` CHECK (product_stock >= 0)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT = 1;
+
+
+-- -----------------------------------------------------
+-- Table: `ShopForHome`.`product_info`
+-- -----------------------------------------------------
+-- DROP TABLE IF EXISTS `ShopForHome`.`product_info`;
+
+CREATE TABLE IF NOT EXISTS `ShopForHome`.`product_info`
+(
+    `product_id` VARCHAR(255)  NOT NULL,
+    `category_type` INT(11) DEFAULT 0,
+    `create_time` DATETIME(6),
+    `product_description` VARCHAR(255) ,
+    `product_icon` VARCHAR(255) ,
+    `product_name` VARCHAR(255)  NOT NULL,
+    `product_price` DECIMAL(19,2) NOT NULL,
+    `product_status` INT(11) DEFAULT 0,
+    `product_stock` INT(11) NOT NULL,
+    `update_time` DATETIME(6),
+    CONSTRAINT `product_info_pkey` PRIMARY KEY (`product_id`),
+    CONSTRAINT `product_info_product_stock_check` CHECK (product_stock >= 0)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT = 1;
+
+
+-- -----------------------------------------------------
+-- Table: `ShopForHome`.`users`
+-- -----------------------------------------------------
+
+-- DROP TABLE IF EXISTS `ShopForHome`.`users`;
+
+CREATE TABLE IF NOT EXISTS `ShopForHome`.`users`
+(
+    `id` BIGINT(20) NOT NULL auto_increment,
+    `active` boolean NOT NULL,
+    `address` VARCHAR(255) ,
+    `email` VARCHAR(255) ,
+    `name` VARCHAR(255) ,
+    `password` VARCHAR(255) ,
+    `phone` VARCHAR(255) ,
+    `role` VARCHAR(255) ,
+    CONSTRAINT `users_pkey` PRIMARY KEY (`id`),
+    CONSTRAINT `uk_sx468g52bpetvlad2j9y0lptc` UNIQUE (`email`)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT = 1;
+
+-- -----------------------------------------------------
+-- Table: `ShopForHome`.`tokens`
+-- -----------------------------------------------------
+ DROP TABLE IF EXISTS `ShopForHome`.`tokens`;
+ -- create sequence tokens_id_seq;
+
+ CREATE TABLE IF NOT EXISTS `ShopForHome`.`tokens`
+ (
+     `id` INT(11) NOT NULL,
+     `created_date` DATETIME(6),
+     `token` VARCHAR(255) ,
+     `user_id` BIGINT(20) NOT NULL,
+     CONSTRAINT `tokens_pkey` PRIMARY KEY (`id`),
+     CONSTRAINT `fk2dylsfo39lgjyqml2tbe0b0ss` FOREIGN KEY (`user_id`)
+         REFERENCES `ShopForHome`.`users` (`id`) MATCH SIMPLE
+         ON UPDATE NO ACTION
+         ON DELETE NO ACTION
+ )
+ENGINE=InnoDB
+AUTO_INCREMENT = 1;
+
+-- -----------------------------------------------------
+-- Table: ShopForHome.wishlist
+-- -----------------------------------------------------
+
+-- DROP TABLE IF EXISTS `ShopForHome`.`wishlist`;
+
+CREATE TABLE IF NOT EXISTS `ShopForHome`.`wishlist`
+(
+    `id` BIGINT(20) NOT NULL,
+    `created_date` DATETIME(6),
+    `user_id` BIGINT(20),
+    `product_id` VARCHAR(255) ,
+    CONSTRAINT `wishlist_pkey` PRIMARY KEY (`id`),
+    CONSTRAINT `product_wish_fkey` FOREIGN KEY (`product_id`)
+        REFERENCES `ShopForHome`.`product_info` (`product_id`) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT `user_wish_Fkey` FOREIGN KEY (`user_id`)
+        REFERENCES `ShopForHome`.`users` (`id`) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+ENGINE=InnoDB
+AUTO_INCREMENT = 1;
+
+
+-- ---------------------------------
+-- Inserting products in database
+-- ---------------------------------
+
+-- -----------------------
+-- ---Product Categories--
+-- -----------------------
+
+
+INSERT INTO `ShopForHome`.`product_category` VALUES (2147483641, 'Furniture', 0, '2022-07-22 23:03:26', '2022-06-23 23:03:26');
+INSERT INTO `ShopForHome`.`product_category` VALUES (2147483642, 'Kitchen', 1, '2022-07-22 23:03:26', '2022-06-23 23:03:26');
+INSERT INTO `ShopForHome`.`product_category` VALUES (2147483643, 'Paintings', 2, '2022-07-22 23:03:26', '2022-06-23 23:03:26');
+INSERT INTO `ShopForHome`.`product_category` VALUES (2147483644, 'Showpieces', 3, '2022-07-22 23:03:26', '2022-06-23 23:03:26');
+
+
+-- ------Product Info-----
+
+-- ----Furniture---
+
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Sofa-1', 'Green couch sofa', 'Cool hipster green couch sofa with brown wooden legs on wooden floor', 'assets/product_images/furniture/f1.jpg', 0, 100, 24999, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Chair-1', 'Comfy chair', 'Home office comfy chair.', 'assets/product_images/furniture/f2.jpg', 0, 100, 4599, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Sofa-2', 'Homestyle Sofa', 'Single Yellow comfortable sofa.', 'assets/product_images/furniture/f3.jpg', 0, 100, 10299, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Chair-2', 'Rocking Chair', 'Wodden material rocking chair.', 'assets/product_images/furniture/f4.jpg', 0, 100, 3499, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Table-1', 'Dining Table', 'Dining room with custom trim accent wall.', 'assets/product_images/furniture/f5.jpg', 0, 100, 33499, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Bed-1', 'Double Bed', 'Simple wooden bedframe in minimalist bedroom.', 'assets/product_images/furniture/f6.jpg', 0, 100, 23499, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Bed-2', 'Single Bed', 'Single size wooden bedframe in minimalist bedroom.', 'assets/product_images/furniture/f7.jpg', 0, 100, 12599, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Table-2', 'Study Table', 'Workspace from Prydumano Design Wodden Study Table.', 'assets/product_images/furniture/f8.jpg', 0, 100, 5499, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Wardrobe-1', 'Wardrobe', 'Made of engineered wood,Easy assembly and dismantling,Indoor use only,For daily care, wipe with a soft, dry cloth', 'assets/product_images/furniture/f9.jpg', 0, 100, 11999, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Wardrobe-2', 'Three Door Wardrobe', 'Hanging rod options include space for both long and short hanging clothes,Finished back for room divider potential with no wardrobe legs. Closed mop base.', 'assets/product_images/furniture/f10.jpg', 0, 100, 35499, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Bookshelf-1', 'BookShelf', 'Wooden Large BookShelf.', 'assets/product_images/furniture/f11.jpg', 0, 100, 18599, 0, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Couch-1', 'Couch', 'Gray Sectional Couch.', 'assets/product_images/furniture/f12.jpg', 0, 100, 25999, 0, NOW());
+
+-- -----Kitchen-----
+
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Stove-1', 'Prestige Marvel Glass Top 4 Burner Gas Stove', '.Gas stove type: Manual; Burner material: Brass; Size of the burner: 2-Small,1-Medium,1-Large; Material of the body: Powder Coated Body; Material of the top: Toughened Glass; Size of the gas stove (in cm): 63.5 x cm 60 x cm 15.5 cm; Colour: Black', 'assets/product_images/kitchen/k1.jpg', 0, 100, 7445, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Stove-2', 'Prestige IRIS LPG Gas Stove, 2 Burner', 'Toughned Black Glass top - Resists Scratches and withstands everyday wear and tear', 'assets/product_images/kitchen/k2.jpg', 0, 100, 3028, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Knife-1', 'Pigeon by Stove Kraft Shears Kitchen Knifes 6 Piece Set with Wooden Block', 'Shears Knife set includes 1 - Boner Knife (25cm), 1- Utility Knife (23cm), 1- Steak Knife(22cm), 1- paring Knife(18cm), 1 - Kitchen Scissor (21cm) & 1 - Wooden Stand.', 'assets/product_images/kitchen/k3.jpg', 0, 100, 565, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Masala-1', 'Plastic Square 7 Sections Multipurpose Masala Rangoli Dabba Box Set', 'This Separate seven removable cups for storing herbs or spices or dry fruits, easy to hold, pick up and carry, keep spices fresh for long hours, Helps Maintain Good Health and Hygiene.', 'assets/product_images/kitchen/k4.jpg', 0, 100, 149, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Drainer-1', 'Solimo Plastic Dish Drainer and Drying Rack for Kitchen Blue', 'Provision of a slanting surface at the bottom for quick water drainage from washed utensils into the sink, keeping the kitchen clean and dry', 'assets/product_images/kitchen/k5.jpg', 0, 100, 379, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Rack-1', 'Stainless Steel 3-Tier Storage Rack', 'SMART DESIGN: Boost your kitchen cupboard storage quickly and easily with this three-tier corner plate rack.', 'assets/product_images/kitchen/k6.jpg', 0, 100, 365, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Cooker-1', 'Hawkins Contura Hard Anodised Aluminium Pressure Cooker, 3 Litres, Black', 'Hard anodised body with stainless steel lid, Gas Stovetop Compatible , Ideal for cooking for: 3-4 Persons.Lid Locking Mechanism : Inner Lid Locking Mechanism', 'assets/product_images/kitchen/k7.jpg', 0, 100, 1949, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Bowl-1', 'Triffle Rice Pulses Fruits Vegetable Noodles Pasta Washing Bowl', 'Perfect size for storage in kitchen and for washing fruits, vegetables, pulses etc, Color: Multicolor, Material: Plastic, Easy to use', 'assets/product_images/kitchen/k8.jpg', 0, 100, 99, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Pan-1', 'Neelam Stainless Steel Induction Bottom Sauce Pan', 'Extra deep robustly constructed cooking pots. Suitable for all types of heat sources - Induction, Gas, Ceramic HOB and halogen cooktops as well ,Capacity: 1150 ml', 'assets/product_images/kitchen/k9.jpg', 0, 100, 506, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Holder-1', 'Kitchen Shelf Stainless Steel Wall Mount Knife Holder', '2 EASY INSTALLATION METHODS: Self-adhesive & Screw drilling. Wolpin kitchen shelf knife rack with towel hanger is easy to wall mount on any smooth and clean surface using: (1). Self-adhesive wall stickers hooks, no drill. OR (2). With screws and hooks', 'assets/product_images/kitchen/k10.jpg', 0, 100, 862, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Holder-2', 'Stainless Steel Wine Glass Rack Under Cabinet Wine Glass Holder', 'MBCARE Stainless Steel Wine Glass Rack Under Cabinet Wine Glass Holder Upside Down Hanging Organizer for Kitchen, Bar, Hotel & Pub 13" 5" 2.5 Inches 2 Pack', 'assets/product_images/kitchen/k11.jpg', 0, 100, 486, 1, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Board-1', 'Cutting Board, Wood Periodic Wine Table Cutting Board ', '12" X 9" X .75" WOOD CUTTING BOARD- This Medium Sized Cheese Board Is Laser Engraved And Includes A 2oz Resealable Cutting Board Mineral Oil. The Cutting Board And Edges Are Sanded Down To Perfection.', 'assets/product_images/kitchen/k12.jpg', 0, 100, 599, 1, NOW());
+
+-- -----Painting-----
+
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Horse-1', 'White Running Horses 5 Pieces Canvas Wall Painting For Home', 'Detailed Finish: The wall painting is made with attention to detail. Every fine detail brings out the beautiful intricacies in them. The painting complements your interiors and adds life to your living space', 'assets/product_images/painting/p1.jpg', 0, 100, 1999, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Eye-1', 'Conceptual Abstract Picture of the Eye Five Pieces Wall Painting', 'Fitted with Wooden Frame : Perfect wall painting for living room, bedroom, kitchen, office, Hotel, dining room, office, bathroom, bar etc.', 'assets/product_images/painting/p2.jpg', 0, 150, 1599, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Buddha-1', 'Premium Canvas Wall Painting of Lord Gautam Buddha of Five Pieces', 'High Definition Textured Surface modern printing artwork on high quality Canvas. A perfect gift for your relative and friends.', 'assets/product_images/painting/p3.jpg', 0, 150, 2599, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Turtle-1', 'Colorful Turtle Canvas Wall Painting ', 'The painting complements your interiors and adds life to your living space, Easy to Clean: This painting is easy to clean and maintain. You can dust the dirt off it by just using a soft cloth.', 'assets/product_images/painting/p4.jpg', 0, 130, 4499, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Flower-1', 'Tulips Flower Canvas Wall Hanging', 'Our Brand VibeCrafts Work Hard To Increase The Satisfaction Of All Our Customers So If You Face Any Trobule Or Issues With Our Product And Feel Its Not Worthy. You can replace your product feel free', 'assets/product_images/painting/p5.jpg', 0, 130, 3499, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('WaterFall-1', 'Beautiful Waterfall 5 Pieces Canvas Wall Painting', 'High Definition Textured Surface modern printing artwork on high quality Canvas. A perfect gift for your relative and friends, Detailed Finish: It is made with attention to detail. Every fine detail brings out the beautiful intricacies in them. ', 'assets/product_images/painting/p6.jpg', 0, 130, 2499, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Canvas-1', 'Countryside Theme Beautiful Framed Canvas Abstract Wall Painting', 'Inephos Away from The Noises - Countryside Theme Beautiful Framed Canvas Abstract Wall Painting (Multicolour, 85cm X 70cm)', 'assets/product_images/painting/p7.jpg', 0, 180, 2999, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Retails-1', 'Multiple Frames Beautiful Wall art Abstract Painting for Living Room', 'Framed on 7mm Heavy MDF Board art prints ready to hang for home decorations wall decor using hanging clips provided on the backside of every panel.Double Tapes provided in the package can be used for the alignment of the frames if needed.', 'assets/product_images/painting/p8.jpg', 0, 180, 1599, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Religious-1', 'Big size Multiple Frames, Beautiful Figures, Religious Wall art Painting ', 'A perfect wall paintings for living room, bedroom, kitchen, office, Hotel, dining room, office, bathroom, bar etc.. Due to different brand of monitors, actual wall art colors may be slightly different from the product image.', 'assets/product_images/painting/p9.jpg', 0, 180, 3099, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Religious-2', 'Wood Abstract Framed Painting (Multicolour, 50 x 30 inch)', 'Framed on 7mm Heavy MDF Board art prints ready to hang for home decorations wall decor using hanging clips provided on the backside of every panel.Double Tapes provided in the package can be used for the alignment of the frames if needed.', 'assets/product_images/painting/p10.jpg', 0, 180, 2299, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Flower-2', 'Wooden multiple frames wall art Framed wall Paintings', 'Lamination: Slight Sparkle Touch with Matt & Textured Finish. Easy to Clean, Just Wipe Off with Wet Cloth, Each Frame Of Size:24cmx76cm (Approx.) total size of painting is 122cmx76cm (approx).', 'assets/product_images/painting/p11.jpg', 0, 180, 2099, 2, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Shiva-1', 'Cotton and Wood Lord Shiva Framed Painting, Ivory, Religious, 85 x 55 cm', 'High Quality Digital Painting for a mesmerizing visual experience, Premium Décor - Pure Cotton Canvas tinted in Matte Earthly Colours, Total Size of Canvas: 85cm x 55cm x 2cm, Canvas is mounted on sturdy imported wooden frames.', 'assets/product_images/painting/p12.jpg', 0, 180, 4999, 2, NOW());
+
+-- -----Showpiece------
+
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('PenStand-1', 'Iron Train Engine Decorative Showpiece Pen Stand', 'Multi-Purpose: Can be used not just in office and work desk, but also on dining table to keep your spoons or as a holder for makeup kits like eyeliners and lipsticks', 'assets/product_images/showpiece/s1.jpg', 0, 180, 999, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Owl-1', 'Classy Lucky Owl Ceramic Art Figure Showpiece', 'The eye-catching ceramic deer sculptures are ideal for decorating the living room, bathroom, countertops, table tops, piano, dressers shelves, bookshelves, coffee tables, and other areas.', 'assets/product_images/showpiece/s2.jpg', 0, 180, 849, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Family-1', 'Gift Set Hanging Legs Cute Decorative Showpiece', 'Polyresin miniature dolls showpieces items for home decor, gift, Ideal gift item for Anniversary, Birthday, Chocolate Day, Rose Day, Valentine Day, Xmas, Christmas, New Year.', 'assets/product_images/showpiece/s3.jpg', 0, 180, 774, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Animal-1', 'Couple Showpiece Modern Art Deer Statue Animal', 'Uses / Occasion : Home Decor, Office Decor , Classroom Decoration, Birthday Gift, Wedding Gift, Anniversary Gift, Engagement Gift, Baby Shower Gift, Farewell Gift, Diwali Gift, Teachers Gift, Thank You Gift, Home Decor.', 'assets/product_images/showpiece/s4.jpg', 0, 180, 1399, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Car-1', 'Car Dashboard Accessories Set of 4 Handcrafted', 'Made from environmental protected resin material.Safe and non-toxic, The four monks represent four different meaning: see no evil, hear no evil, speak no evil and do no evil.Also tell us the simpler the more happy.', 'assets/product_images/showpiece/s5.jpg', 0, 200, 345, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Antique-1', 'Antique Finish Tribal Art Handmade Showpiece', 'It is Antique finish Tribal Art Handmade decorative Showpiece, It is a perfect gift for Unique Gift, Thanks giving Gift, Anniversary Gift, Wedding Gift, Birthday Gift, Diwali Gifts etc', 'assets/product_images/showpiece/s6.jpg', 0, 240, 2625, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Cycle-1', 'Metal Cycle Key Hanging Wall Hanging Showpiece', 'Material: Metal, Colour: Gold, Dimensions: Length: 11 Inches, Width: 13 Inches, Weight: 480 Gram, Clear Instructions: Clean With Soft Clear And Dry Clothes', 'assets/product_images/showpiece/s7.jpg', 0, 190, 450, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Elephant-1', 'Metal Trunk Up Elephant Family Statue Showpiece', 'These metal elephants are the symbol of wisdom, power, strength ,fertility, wealth and good luck, These statues are regarded highly auspicious in Hindu and Buddhist Culture.', 'assets/product_images/showpiece/s8.jpg', 0, 120, 339, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Panther-1', 'Ceramic White Panther Geometric Statue', 'Decorate your living dining or bedroom with this symbol of eternal positivity, Easy to put the figurines on your desk, living room table perfect for display on shelf of store. A nice gift.', 'assets/product_images/showpiece/s9.jpg', 0, 320, 699, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Musicians-1', 'Metal Rajasthani Musicians Item showpiece', 'STYLISH & FUNCTIONAL: musical dancing figurines gives vintage & modern look to your bedroom, living, dining room, kitchen, Cafe, Hotels, Table, desk, drawing room corner also a home interior show piece', 'assets/product_images/showpiece/s10.jpg', 0, 520, 1269, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Shiva-2', 'Statue for Home Decor Adiyogi Shiv Statue', '🔱PREMIUM QUALITY : This idol figurine statue is made up to Polyresin which is easily cleanable by dry cloth. It is rust and dust proof, 🔱SPECIAL USED IN : Suitable for various Home Decoration Style.', 'assets/product_images/showpiece/s11.jpg', 0, 550, 297, 3, NOW());
+INSERT INTO product_info (product_id, product_name, product_description, product_icon, product_status, product_stock, product_price, category_type,create_time) VALUES ('Cute-2', 'Polyresin Cute Boy & Girl Hanging Legs Showpiece', 'A very nice product for home décor. Put it on any shelf or table. A very lovely gift for various occasions such as housewarming party, Wedding Anniversaries, Birthdays, Engagement, Wedding Etc. Made of Polyresin, they feel premium quality.', 'assets/product_images/showpiece/s12.jpg', 0, 258, 649, 3, NOW());
+
+
+-- -----------------------------------------------------
+-- Users
+-- -----------------------------------------------------
+
+INSERT INTO `ShopForHome`.`users` VALUES (2147483645, true, 'St-3, Dayanand nagar Shamli, Uttar Pradesh', 'raja123@gmail.com', 'Admin', '$2a$10$LiBwO43TpKU0sZgCxNkWJueq2lqxoUBsX2Wclzk8JQ3Ejb9MWu2Xy', '9876543987', 'ROLE_MANAGER');

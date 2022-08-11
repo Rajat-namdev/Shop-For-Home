@@ -1,0 +1,73 @@
+<div style="width:70%; margin: 25px auto">
+  <mat-card>
+    <h1 class="display-4 text-center bg-light mb-5 font-weight-bold">Edit Profile</h1>
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+    
+    <mat-form-field class="full-width" style="font-size: 15px;" appearance="outline">
+      <mat-label>Email Address</mat-label>
+      <input readonly [value]=user?.email type="email" disabled
+        id="email" name="email" placeholder="Enter email" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" style="font-size: 15px;" appearance="outline">
+      <mat-label>Name</mat-label>
+      <input [(ngModel)]="user.name" type="text" id="name"
+        name="name" placeholder="Your Name" minlength="3" required #name="ngModel" autofocus matInput>
+      <div *ngIf="name.invalid && (name.dirty || name.touched)">
+        <mat-hint *ngIf="name.errors.required">
+          Name is required
+        </mat-hint>
+        <mat-error *ngIf="name.errors.minlength" >
+          Name must be at least 3 characters long
+        </mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" style="font-size: 15px;" appearance="outline">
+      <mat-label>Password</mat-label>
+      <input [(ngModel)]="user.password" type="password"
+        id="password" name="password" placeholder="Password" minlength="3" required #password="ngModel" matInput>
+      <div *ngIf="password.invalid && (password.dirty ||password.touched)">
+        <mat-hint *ngIf="password.errors.required" >
+          Password is required
+        </mat-hint>
+        <mat-error *ngIf="password.errors.minlength" >
+          Password must be at least 3 characters long
+        </mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" style="font-size: 15px;" appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input [(ngModel)]="user.phone" type="text" id="phone"
+        name="phone" placeholder="Phone" required pattern="^[0-9]{10}$" #phone="ngModel" matInput>
+      <div *ngIf="phone.invalid && (phone.dirty ||phone.touched)">
+        <mat-hint *ngIf="phone.errors.required" >
+          Phone is required
+        </mat-hint>
+        <mat-error *ngIf="phone.errors.pattern">
+          Phone number must be 10 digit
+        </mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" style="font-size: 15px;" appearance="outline">
+      <mat-label>Address</mat-label>
+      <input [(ngModel)]="user.address" type="text"  id="address"
+        name="address" placeholder="Address" required #address="ngModel" matInput>
+      <div *ngIf="address.invalid && (address.dirty ||address.touched)">
+        <mat-hint *ngIf="address.errors.required">
+          Address is required
+        </mat-hint>
+      </div>
+    </mat-form-field>
+
+    <div class="container text-center mt">
+      <button type="submit" mat-raised-button color="primary" [disabled]="!form.form.valid">Update</button>
+      <button style="margin-left: 20px;" type="reset" mat-raised-button color="accent">Clear</button>
+    </div>
+  </form>
+</mat-card>
+</div>
+
+

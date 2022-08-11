@@ -1,0 +1,76 @@
+
+<mat-card style="border: 25px solid burlywood; background-color: aquamarine;">
+  <div class="container text-center">
+  <mat-card style="border: 5px solid burlywood;">
+<!-- <a class="float-right btn btn-success btn-lg font-weight-bold mb-3" routerLink="/seller/product/new">Add Product <i
+    class="fa fa-plus"></i></a> -->
+<form action="/" method="post" class="form-group font-weight-bold text-muted" enctype="multipart/form-data">
+  <input class="form-control form-control-lg" type="file" (change)="onChange($event)">
+</form>
+<button (click)="onUpload()" class="btn btn-success font-weight-bold btn-lg">
+  Upload Products <i class="fa fa-upload mt-2"></i>
+</button>
+
+<button (click)="exportAsXLSX()" class="btn btn-primary btn-lg font-weight-bold ml-4">
+  Download Report <i class="fa fa-download" aria-hidden="true"></i></button>
+  </mat-card>
+</div>
+
+<div class="container text-center mt-4">
+<mat-card style="border: 5px solid burlywood;">
+<form class="form-inline">
+  <input type="text" name="search" class="form-control d-inline font-weight-bold mt-4" size="185pc" width="100%"
+    [(ngModel)]="searchText" placeholder="Search for products ..." />
+  <button (click)="search=searchText" [(ngModel)]="search" name="search"
+    class="btn btn-info btn-lg font-weight-bold ml-2 mt-4">Search<i class="fa fa-search ml-2" aria-hidden="true"></i>
+  </button>
+</form>
+</mat-card>
+</div>
+
+<table id="table" class="table table-striped text-center h4" style="font-size: 15px;">
+  <thead>
+    <tr>
+      <th scope="col">Photo</th>
+      <th scope="col">Code</th>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">Description</th>
+      <th scope="col">Price</th>
+      <th scope="col">Stock</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+      <th scopr="col">Mail</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let productInfo of page?.content | filter:search">
+      <th class="align-middle" scope="row">
+        <img height="100px" src="{{productInfo.productIcon}}" alt="{{productInfo.productName}}">
+      </th>
+      <td class="align-middle">{{productInfo.productId}}</td>
+      <td class="align-middle">{{productInfo.productName}}</td>
+      <td class="align-middle">{{CategoryType[productInfo.categoryType]}}</td>
+      <td class="align-middle text-justify">{{productInfo.productDescription}}</td>
+      <td class="align-middle">{{productInfo.productPrice | currency : '&#8377;'}}</td>
+      <td class="align-middle">{{productInfo.productStock}}</td>
+      <td class="align-middle">{{ProductStatus[productInfo.productStatus]}}</td>
+      <td class="align-middle">
+        <a routerLink="/seller/product/{{productInfo.productId}}/edit"
+          class="btn btn-outline-info btn-lg d-block font-weight-bold mb-2">
+          Edit <i class="fa fa-wrench" aria-hidden="true"></i></a>
+
+        <button (click)="remove(productInfo.productId)" class="btn btn-outline-danger btn-lg d-block font-weight-bold">
+          Remove <i class="fa fa-trash" aria-hidden="true"></i></button>
+      </td>
+      <td class="align-middle">
+        <button (click)=onSubmit() [disabled]="(productInfo.productStock >10)? true:false"
+          class="btn btn-success btn-lg font-weight-bold">Email <i class="fa fa-envelope"
+            aria-hidden="true"></i></button>
+      </td>
+  </tbody>
+</table>
+</mat-card>
+
+<app-pagination [currentPage]="page"></app-pagination>

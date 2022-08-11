@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="com.c2_g4_sfh_main.entity.Order"/>
+    <fullyQualifiedTypeName name="lombok.var"/>
+    <fullyQualifiedTypeName name="com.c2_g4_sfh_main.entity.User"/>
+    <fullyQualifiedTypeName name="org.springframework.cloud.netflix.eureka.EnableEurekaClient"/>
+</qualifiedTypeNameHistroy>

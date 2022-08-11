@@ -1,0 +1,42 @@
+.table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+
+}
+
+.table tr td {
+    padding: 20px 20px;
+    border: 1px solid black;
+    
+   
+}
+/* 
+.img{
+    align-content: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+*{
+    overflow: hidden;
+
+}
+
+.sideimages img{
+    overflow: hidden;
+    background-color:#fdca35;
+    width: 100%;
+}
+.float{
+    position: absolute;
+    left: auto;
+    width: 100%;
+
+}

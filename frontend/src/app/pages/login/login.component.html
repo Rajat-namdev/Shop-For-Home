@@ -1,0 +1,49 @@
+<html>
+  <body>
+<div class="login-form" style="width:50%; margin: 25px auto">
+  <mat-card style="border: 5px solid burlywood">
+  <div class="container text-center">
+    <img class="img-fluid" style="width: 100px;" src="\assets\login_register_png\password.png">
+  </div>
+  <h1 class="display-4 text-center bg-light mb-5 font-weight-bold">Login Here !!</h1>
+  <div class="alert alert-danger font-weight-bold h4" *ngIf="isInvalid">
+    Invalid username and password.
+  </div>
+  <div class="alert alert-info font-weight-bold h4" *ngIf="isLogout">
+    You have been logged out.
+  </div>
+
+  <form #form='ngForm' (ngSubmit)="onSubmit()">
+    <mat-form-field class="full-width" style="font-size: 15px;" appearance="outline">
+      <mat-label>Email Address</mat-label>
+      <input type="text"  id="email" name="email"
+        placeholder="Enter email" required autofocus [(ngModel)]="model.username" #email="ngModel" autocomplete="email" matInput>
+      <mat-hint [hidden]="email.valid || email.untouched" >Email is required</mat-hint>
+     
+    </mat-form-field>
+
+    <mat-form-field class="full-width" style="font-size: 15px;" appearance="outline">
+      <mat-label>Password</mat-label>
+      <input type="password" id="password" name="password"
+        autocomplete="password" placeholder="Password" required [(ngModel)]="model.password" #password='ngModel' matInput>
+      <mat-hint [hidden]="password.valid || password.untouched">Password is required</mat-hint>
+    </mat-form-field>
+
+    <div class="form-group mt-4">
+      <input type="checkbox" id="remember_me" name="remember-me" [(ngModel)]="model.remembered">
+      <label for="remember_me" class="inline ml-1 mb-4">Remember me</label>
+      <a class="float-right font-weight-bold" routerLink="/register">New User? click to Register</a>
+    </div>
+
+    <div class="container text-center">
+      <button mat-raised-button color="primary" [disabled]="!form.form.valid" type="submit">Login</button>
+      <button style="margin-left: 10px;" type="reset" mat-raised-button color="accent">Reset</button>
+    </div>
+  </form>
+
+
+
+</mat-card>
+</div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+ProductId,ProductName,Price,Stock,Description,ProductIcon,CategoryType
+Airplane-1,Metallic Yellow Airplane Miniature,899,70,Its suitable for Home and Office Décor and ideal for gifting,assets/product_images/showpiece/s13.jpg,3
+Rajasthan-3,Karigaari India Set,1199,80,Occasion : Perfect for House Warming,assets/product_images/showpiece/s14.jpg,3
+Dog-3,Black Dog Cute Pair Showpiece,899,110,"Decorative Statue- Abstract sculptures can decorate your living room, bedroom, office, library, coffee shop, hotel. ",assets/product_images/showpiece/s15.jpg,3
+Foldable-1,Foldable Bed Study Table,529,420,"MULTI-PURPOSE LAPTOP DESK: Laptop bed tray is perfect lap desks for work, games, reading, eating and school",assets/product_images/furniture/f13.jpg,0
+Office-1, High Back Ergonomic Office Chair,5990,580,Made in India - Beatle Mid back chair is totally Made in India. It’s a fully loaded chair that comes equipped with all the functions.,assets/product_images/furniture/f14.jpg,0
+Rack-1,Magazine Rack,499,340,"Elegant and fashionable, it is suitable for study, living room, bedside, office, cafe or tea shop desktop decoration, etc.",assets/product_images/furniture/f15.jpg,0

@@ -1,0 +1,30 @@
+<mat-card style="border: 25px solid burlywood; background-color: cadetblue;">
+<h1 class="display-4 text-center bg-light mb-5 font-weight-bold">Order Detail</h1>
+<table class="table table-striped text-center h4">
+  <thead>
+    <tr>
+      <th scope="col">Photo</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Subtotal</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let item of (order$ | async)?.products">
+      <th class="align-middle" scope="row">
+        <a routerLink="/seller/product/{{item.productId}}/edit"><img height="100px" src="{{item.productIcon}}"
+            alt="{{item.productName}}"></a>
+      </th>
+      <td class="align-middle"><a routerLink="/seller/product/{{item.productId}}/edit">{{item.productName}}</a></td>
+      <td class="align-middle text-justify">{{item.productDescription}}</td>
+      <td class="align-middle">{{item.productPrice | currency : '&#8377;'}}</td>
+      <td class="align-middle">{{item.count}}</td>
+      <td class="align-middle">{{(item.productPrice * item.count | currency : '&#8377;')}}</td>
+    </tr>
+  </tbody>
+</table>
+<h4 class="float-right font-weight-bold">Total : {{(order$ | async)?.orderAmount | currency : '&#8377;'}}</h4>
+</mat-card>

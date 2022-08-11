@@ -1,0 +1,177 @@
+package com.wipro.springboot.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Objects;
+
+@Entity
+@Data
+public class ProductInOrder {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@JsonIgnore
+	private Cart cart;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id")
+	@JsonIgnore
+	private Order order;
+
+	private String productId;
+
+	private String productName;
+
+	private String productDescription;
+
+	private String productIcon;
+
+	private Integer categoryType;
+
+	private BigDecimal productPrice;
+
+	private Integer productStock;
+
+	private Integer count;
+
+	public ProductInOrder() {
+
+	}
+
+	public ProductInOrder(Product productInfo, Integer quantity) {
+		this.productId = productInfo.getProductId();
+		this.productName = productInfo.getProductName();
+		this.productDescription = productInfo.getProductDescription();
+		this.productIcon = productInfo.getProductIcon();
+		this.categoryType = productInfo.getCategoryType();
+		this.productPrice = productInfo.getProductPrice();
+		this.productStock = productInfo.getProductStock();
+		this.count = quantity;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductInOrder{" + "id=" + id + ", productId='" + productId + '\'' + ", productName='" + productName
+				+ '\'' + ", productDescription='" + productDescription + '\'' + ", productIcon='" + productIcon + '\''
+				+ ", categoryType=" + categoryType + ", productPrice=" + productPrice + ", productStock=" + productStock
+				+ ", count=" + count + '}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		if (!super.equals(o))
+			return false;
+		ProductInOrder that = (ProductInOrder) o;
+		return Objects.equals(id, that.id) && Objects.equals(productId, that.productId)
+				&& Objects.equals(productName, that.productName)
+				&& Objects.equals(productDescription, that.productDescription)
+				&& Objects.equals(productIcon, that.productIcon) && Objects.equals(categoryType, that.categoryType)
+				&& Objects.equals(productPrice, that.productPrice);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(super.hashCode(), id, productId, productName, productDescription, productIcon, categoryType,
+				productPrice);
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getProductDescription() {
+		return productDescription;
+	}
+
+	public void setProductDescription(String productDescription) {
+		this.productDescription = productDescription;
+	}
+
+	public String getProductIcon() {
+		return productIcon;
+	}
+
+	public void setProductIcon(String productIcon) {
+		this.productIcon = productIcon;
+	}
+
+	public Integer getCategoryType() {
+		return categoryType;
+	}
+
+	public void setCategoryType(Integer categoryType) {
+		this.categoryType = categoryType;
+	}
+
+	public BigDecimal getProductPrice() {
+		return productPrice;
+	}
+
+	public void setProductPrice(BigDecimal productPrice) {
+		this.productPrice = productPrice;
+	}
+
+	public Integer getProductStock() {
+		return productStock;
+	}
+
+	public void setProductStock(Integer productStock) {
+		this.productStock = productStock;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+}

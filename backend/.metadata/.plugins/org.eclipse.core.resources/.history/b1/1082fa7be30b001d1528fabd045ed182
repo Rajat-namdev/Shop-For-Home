@@ -1,0 +1,13 @@
+package com.c2_g4_sfh_main;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class C2G4SfhMainApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(C2G4SfhMainApplication.class, args);
+	}
+
+}

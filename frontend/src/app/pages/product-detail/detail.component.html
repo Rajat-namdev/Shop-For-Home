@@ -1,0 +1,57 @@
+<mat-card style="border: 25px solid burlywood;">
+<h1 class="display-4 text-center bg-light mb-5 font-weight-bold ">{{title}}</h1>
+
+<div class="row text-center justify-content-center">
+  <div class="col-lg-6 ">
+    <div class="card mb-4 border-info ">
+      <mat-card style="border: 2px solid blue;">
+
+      <img height="60%" class="card-img-top" src="{{productInfo?.productIcon}}">
+
+      <div class="card-body">
+        <mat-card style="border: 2px solid pink;">
+        <h3 class="card-title font-weight-bold ">{{productInfo?.productName}}</h3>
+
+        <form name="form" #form='ngForm' (ngSubmit)="productInfo?.productStatus == 0 && addToCart()">
+
+          <div class="text-left">
+            <input hidden name="productId" [value]=productInfo?.productId>
+            <p class="card-text text-justify h4"><strong>Description : </strong>{{productInfo?.productDescription}}</p>
+            <p class="card-text h4">
+              <strong>Price : </strong>
+              <label id="price">{{productInfo?.productPrice | currency : '&#8377;'}}</label>
+            </p>
+            <p class="card-text h4"><strong>Stock : </strong>{{productInfo?.productStock}}</p>
+            <label class="card-text h4">
+              <strong>Quantity : </strong>
+              <input [(ngModel)]=count (change)="validateCount()" type="number" name="count" required min="1"
+                [max]=productInfo?.productStock>
+            </label>
+            <p class="card-text h4"><strong>Subtotal: </strong>
+              <label id="subtotal">{{count * productInfo?.productPrice | currency : '&#8377;'}}</label>
+            </p>
+          </div>
+
+          <a *ngIf="productInfo.productStatus == 0 && (currentUser && !addedToWishlist)"
+            class="btn btn-success text-white font-weight-bold btn-lg mr-4"
+            (click)="handleAddToWishList(productInfo.productId)">Add To Wishlist <i class="far fa-heart"></i>
+          </a>
+
+          <a *ngIf="currentUser && addedToWishlist" class="btn btn-danger text-white font-weight-bold btn-lg mr-4"
+            (click)="handleRemoveFromWishList(productInfo.productId)">Remove From Wishlist <i class="far fa-heart"></i>
+          </a>
+
+          <button type="submit" [disabled]="!form.form.valid" *ngIf="productInfo?.productStatus == 0; else offBlock"
+            class="btn btn-primary font-weight-bold btn-lg">Add to Cart <i class="fa fa-shopping-cart"
+              aria-hidden="true"></i>
+          </button>
+          <ng-template #offBlock><a class="btn btn-light text-danger btn-lg disabled font-weight-bold">Product is
+              Unavailable!</a></ng-template>
+        </form>
+        </mat-card>
+      </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
+</mat-card>

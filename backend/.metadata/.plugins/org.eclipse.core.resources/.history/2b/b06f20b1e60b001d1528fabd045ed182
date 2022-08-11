@@ -1,0 +1,5 @@
+package com.c2_g4_discount_ms.entity;
+
+public class Discount {
+
+}

@@ -1,0 +1,40 @@
+<mat-card style="border: 25px solid burlywood; background-color: coral;">
+<h1 class="display-4 text-center bg-light mb-5 font-weight-bold">Discount Coupons</h1>
+
+<form class="form-inline mb-4">
+  <div class="container text-center mt-5" style="font-size: 20px;">
+  <input name="search" [(ngModel)]="searchText" placeholder="Search for Coupons ..."
+    class="form-control font-weight-bold mr-2" size="100" type="search" matInput>
+  <button (click)="search=searchText" [(ngModel)]="search" name="search"
+    mat-raised-button color="primary">Search<i class="fa fa-search ml-2" aria-hidden="true"></i>
+  </button>
+  </div>
+</form>
+
+<form class="form-inline mb-2">
+  <div class="container text-center mt-2" style="font-size: 20px;">
+  <input [(ngModel)]="coupon" type="text" size="20" id="coupon"
+    name="coupon" placeholder="Enter coupon code" matInput>
+    </div>
+</form>
+<div class="container text-center mt-4">
+  <button (click)="addCoupon(coupon)" mat-raised-button color="primary">Add Coupon</button>
+</div>
+<table id="table" class="table table-striped text-center h4">
+  <thead>
+    <tr>
+      <th scope="col">Couponcode</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let coupon of page?.content | filter:search">
+      <td class="align-middle">{{coupon.id}}</td>
+      <td class="align-middle">
+        <button (click)="deleteCoupon(coupon.id)" class="btn btn-outline-danger font-weight-bold btn-lg">Remove <i
+            class="fa fa-trash" aria-hidden="true"></i></button>
+      </td>
+  </tbody>
+</table>
+</mat-card>
+<app-pagination [currentPage]="page"></app-pagination>
